@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  // #auto() Used to generate an ObjectId for @id fields:
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  name             String?
+  email            String         @unique
+  numberVerified   Boolean        @default(false)
+  customTag        String         @unique
+  bio              String?
+  image            String?
+  coverImage       String?
+  profileImage     String?
+  hashedPassword   String
+  isVerified       Boolean        @default(false)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  deletedAt        DateTime?
+  followerId       String[]       @db.ObjectId
+  followingId      String[]       @db.ObjectId
+  hasNotifications Boolean        @default(false)
+  isActived        Boolean        @default(true)
+  accounts         Account[]
+  notifications    Notification[]
+  posts            Post[]
+  comments         Comment[]
+  replays          Replay[]
+  nustedReplays    NestedReplay[]
+  skills           Skill[]
+  projects         Project[]
+}
+
+model Account {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // In the following example, a combination of provider and providerAccountId must be unique:
+  @@unique([provider, providerAccountId])
+}
+
+model Post {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId              String    @db.ObjectId
+  body                String
+  image               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  likesId             String[]  @db.ObjectId
+  viewsId             String[]  @db.ObjectId
+  isShared            Boolean   @default(false)
+  fromSharedId        String?   @db.ObjectId
+  postSharedCreatedAt DateTime?
+  hashTags            String[]
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments            Comment[]
+}
+
+model Comment {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.ObjectId
+  postId    String   @db.ObjectId
+  likesId   String[] @db.ObjectId
+  replays   Replay[]
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Replay {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  body          String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  userId        String         @db.ObjectId
+  postId        String         @db.ObjectId
+  commentId     String         @db.ObjectId
+  likesId       String[]       @db.ObjectId
+  nestedReplays NestedReplay[]
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment       Comment        @relation(fields: [commentId], references: [id], onDelete: Cascade)
+}
+
+model NestedReplay {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.ObjectId
+  replayId  String   @db.ObjectId
+  likesId   String[] @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replay    Replay   @relation(fields: [replayId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String
+  userId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+  fromId    String   @db.ObjectId
+  type      String
+  link      String
+  isRead    Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SearchQuery {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  query String
+}
+
+model Skill {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Project {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  createdAt   DateTime  @default(now())
+  startDate   DateTime?
+  endDate     DateTime?
+  link        String
+  userId      String    @db.ObjectId
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Verification {
+  // #MongoDB The underlying ID field name is always _id, and must be mapped with @map("_id")
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  name   String
+  email  String
+}
