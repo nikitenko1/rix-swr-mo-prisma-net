@@ -23,9 +23,9 @@ STRIPE_SECRET_KEY="sk_test_123456.."
 
 ![Screenshot (124)](https://github.com/nikitenko1/rix-swr-mo-prisma-net/assets/20661870/dd7aaaf9-0cd9-4256-a723-fc3a908361c8)
 ![Screenshot (125)](https://github.com/nikitenko1/rix-swr-mo-prisma-net/assets/20661870/d2e22153-3b34-4692-b979-1f42c34405ab)
-![Screenshot (126)](https://g![Screensho![Screenshot (128)](https://github.com/nikitenko1/rix-swr-mo-prisma-net/assets/20661870/3faaecd2-63dc-4c72-94a6-ad68956b1979)
- 
- ![Screenshot (127)](https://github.com/nikitenko1/rix-swr-mo-prisma-net/assets/20661870/25b45b70-4c52-4a50-9ff2-9916e598e6a6)
- ![Screenshot (128)](https://github.com/nikitenko1/rix-swr-mo-prisma-net/assets/20661870/c4562c16-dc49-429f-94fc-42fb39d326cb)
+![Screenshot (127)](https://github.com/nikitenko1/rix-swr-mo-prisma-net/assets/20661870/25b45b70-4c52-4a50-9ff2-9916e598e6a6)
+![Screenshot (128)](https://github.com/nikitenko1/rix-swr-mo-prisma-net/assets/20661870/c4562c16-dc49-429f-94fc-42fb39d326cb)
 
 
+
+![Screenshot (126)](https://github.com/nikitenko1/rix-swr-mo-prisma-net/assets/20661870/d6eeffc8-0271-4644-8f8c-35a3a065a630)
